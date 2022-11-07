@@ -8,8 +8,9 @@ while (true)
     Console.WriteLine("2) Modifica utente");
     Console.WriteLine("3) Ricerca utente");
     Console.WriteLine("4) Aggiungi un prestito");
-    Console.WriteLine("5) Ammontare totale dei prestiti di un cliente");
-    Console.WriteLine("6) Rate mancanti all'estinsione del presito");
+    Console.WriteLine("5) Stampa prestiti");
+    Console.WriteLine("6) Ammontare totale dei prestiti di un cliente");
+    Console.WriteLine("7) Rate mancanti all'estinsione del presito");
     int risposta = Convert.ToInt32(Console.ReadLine());
 
     switch (risposta)
@@ -31,12 +32,27 @@ while (true)
                 break;
             }
         case 3:
-            
+            StampaCliente();
+            break;
+        case 4:
+            AggiungiPrestitoInfo();
+            break;
+        case 5:
+            StampaPresiti();
+            break;
+        case 6:
+            Console.WriteLine(intesa.TotaleAmmontarePrestiti(inserisciIlCodiceFiscale()));
+            break;
+        case 7:
+            InfoPrestitiRateDaPagare(inserisciIlCodiceFiscale());
             break;
         default:
             break;
     }
 }
+
+
+
 void AggiungiClienteInfo()
 {
     Console.WriteLine("inserisci il nome");
@@ -71,7 +87,10 @@ string inserisciIlCodiceFiscale()
 
 void StampaCliente()
 {
-
+    Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
+    Console.WriteLine("Nome : " + ClientePrestito.Nome);
+    Console.WriteLine("Cognome : " + ClientePrestito.Cognome);
+    Console.WriteLine("Codice fiscale : " + ClientePrestito.CodiceFiscale);
 }
 
 void AggiungiPrestitoInfo()
@@ -118,6 +137,20 @@ void StampaInfoGenerali() {
     Console.WriteLine("Codice fiscale : " + ClientePrestito.CodiceFiscale);
     InfoPrestitiRateDaPagare(ClientePrestito.CodiceFiscale);
     Console.WriteLine("ammontare totale dei tuoi prestiti : " + intesa.TotaleAmmontarePrestiti(ClientePrestito.CodiceFiscale));
+}
+
+void StampaPresiti()
+{
+    List<Prestito> Pestiti = intesa.PrenstitiConcessiCliente(inserisciIlCodiceFiscale());
+
+    foreach (Prestito item in Pestiti)
+    {
+        Console.WriteLine("ID : " + item.ID);
+        Console.WriteLine("Ammontare : " + item.Ammontare);
+        Console.WriteLine("Rata : " + item.ValoreRata);
+        Console.WriteLine("data Inizio : " + item.Inizio);
+        Console.WriteLine("data Fine : " + item.Fine);
+    }
 }
 
 void InfoPrestitiRateDaPagare(string codiceFiscale)

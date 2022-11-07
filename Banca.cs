@@ -93,7 +93,7 @@
         }
         else
         {
-            if ((nuovoPrestito.Intestatario.Stipendio / 2) > ControlloPrestito(nuovoPrestito.Intestatario.CodiceFiscale))
+            if ((nuovoPrestito.Intestatario.Stipendio / 2) > TotaleRatePrestiti(nuovoPrestito.Intestatario.CodiceFiscale))
             {
                 Prestiti.Add(nuovoPrestito);
                 return true;
@@ -103,7 +103,7 @@
         }
     }
 
-    public int ControlloPrestito(string codiceFiscale)
+    public int TotaleRatePrestiti(string codiceFiscale)
     {
         List<Prestito> PrestitiAlCliente = PrenstitiConcessiCliente(codiceFiscale);
         int totalAmount = 0;
