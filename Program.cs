@@ -1,12 +1,42 @@
 ﻿
 Banca intesa = new Banca("Intesa san Paolo");
 Console.WriteLine("Sistema amministrazione banca " + intesa.Nome);
+while (true)
+{
+    Console.WriteLine("scegli un opzione");
+    Console.WriteLine("1) Registra utente");
+    Console.WriteLine("2) Modifica utente");
+    Console.WriteLine("3) Ricerca utente");
+    Console.WriteLine("4) Aggiungi un prestito");
+    Console.WriteLine("5) Ammontare totale dei prestiti di un cliente");
+    Console.WriteLine("6) Rate mancanti all'estinsione del presito");
+    int risposta = Convert.ToInt32(Console.ReadLine());
 
-AggiungiClienteInfo();
-AggiungiPrestitoInfo();
-AggiungiPrestitoInfo();
-Console.WriteLine(intesa.TotaleAmmontarePrestiti(inserisciIlCodiceFiscale()));
-
+    switch (risposta)
+    {
+        case 1:
+            AggiungiClienteInfo();
+            break;
+        case 2:
+            inserisciIlCodiceFiscale();
+            Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
+            if (ClientePrestito == null)
+            {
+                Console.WriteLine("utente non trovato");
+                break;
+            }
+            else
+            {
+                intesa.ModificaCliente(ClientePrestito);
+                break;
+            }
+        case 3:
+            
+            break;
+        default:
+            break;
+    }
+}
 void AggiungiClienteInfo()
 {
     Console.WriteLine("inserisci il nome");
@@ -39,6 +69,11 @@ string inserisciIlCodiceFiscale()
     return CodiceFiscale;
 }
 
+void StampaCliente()
+{
+
+}
+
 void AggiungiPrestitoInfo()
 {
     Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
@@ -65,7 +100,6 @@ void AggiungiPrestitoInfo()
     {
         Console.WriteLine();
         Console.WriteLine("prestito inserito correttamente");
-        Console.WriteLine(Math.Abs((int)(nuovo.Inizio.ToDateTime(TimeOnly.Parse("10:00 PM")).Subtract(nuovo.Fine.ToDateTime(TimeOnly.Parse("10:00 PM"))).Days / (365.25 / 12))));
         Console.WriteLine();
     }
     else
@@ -73,5 +107,27 @@ void AggiungiPrestitoInfo()
         Console.WriteLine();
         Console.WriteLine("prestito non inserito");
         Console.WriteLine();
+    }
+}
+
+void StampaInfoGenerali() {
+
+    Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
+    Console.WriteLine("Nome : " + ClientePrestito.Nome);
+    Console.WriteLine("Cognome : " + ClientePrestito.Cognome);
+    Console.WriteLine("Codice fiscale : " + ClientePrestito.CodiceFiscale);
+    InfoPrestitiRateDaPagare(ClientePrestito.CodiceFiscale);
+    Console.WriteLine("ammontare totale dei tuoi prestiti : " + intesa.TotaleAmmontarePrestiti(ClientePrestito.CodiceFiscale));
+}
+
+void InfoPrestitiRateDaPagare(string codiceFiscale)
+{
+    List<Prestito> PrestitiAlCliente = intesa.PrenstitiConcessiCliente(codiceFiscale);
+
+    foreach (Prestito prestito in PrestitiAlCliente)
+    {
+        Console.WriteLine("Prestito con id " + prestito.ID);
+        Console.WriteLine("Valore rata da pagare " + prestito.ValoreRata);
+        Console.WriteLine("numero rate rimanenti " + Math.Abs((int)(prestito.Inizio.ToDateTime(TimeOnly.Parse("10:00 PM")).Subtract(prestito.Fine.ToDateTime(TimeOnly.Parse("10:00 PM"))).Days / (365.25 / 12))));
     }
 }

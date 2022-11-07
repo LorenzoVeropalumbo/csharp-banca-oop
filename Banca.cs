@@ -146,15 +146,4 @@
         
         return totalAmount;
     }
-
-    public void InfoPrestitiRateDaPagare(string codiceFiscale)
-    {
-        List<Prestito> PrestitiAlCliente = PrenstitiConcessiCliente(codiceFiscale);
-
-        foreach (Prestito prestito in PrestitiAlCliente)
-        {
-            Console.WriteLine("Prestito con id " + prestito.ID);
-
-        }
-    }
 }
