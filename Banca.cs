@@ -48,37 +48,6 @@
         return true;
     }
 
-    public void ModificaCliente(Cliente cliente)
-    {
-        Console.WriteLine("inserisci il nome");
-        string Nome = Console.ReadLine();
-        if (Nome != "")
-        {
-            cliente.Nome = Nome;
-        }
-        
-        Console.WriteLine("inserisci il Cognome");
-        string Cognome = Console.ReadLine();
-        if (Cognome != "")
-        {          
-            cliente.Cognome = Cognome;
-        }
-
-        Console.WriteLine("inserisci il CodiceFiscale");
-        string CodiceFiscale = Console.ReadLine();
-        if (CodiceFiscale != "")
-        {
-            cliente.CodiceFiscale = CodiceFiscale;
-        }
-
-        Console.WriteLine("inserisci il Stipendio");
-        int Stipendio = Convert.ToInt32(Console.ReadLine());
-        if (Stipendio > 200)
-        {           
-            cliente.Stipendio = Convert.ToInt32(Console.ReadLine());
-        }
-    }
-
     public bool AggiungiPrestito(Prestito nuovoPrestito)
     {
         if (

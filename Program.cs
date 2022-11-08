@@ -11,6 +11,8 @@ while (true)
     Console.WriteLine("5) Stampa prestiti");
     Console.WriteLine("6) Ammontare totale dei prestiti di un cliente");
     Console.WriteLine("7) Rate mancanti all'estinsione del presito");
+    Console.WriteLine("8) Stampa info generali");
+    Console.WriteLine("9) Bonus");
     int risposta = Convert.ToInt32(Console.ReadLine());
 
     switch (risposta)
@@ -19,18 +21,8 @@ while (true)
             AggiungiClienteInfo();
             break;
         case 2:
-            inserisciIlCodiceFiscale();
-            Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
-            if (ClientePrestito == null)
-            {
-                Console.WriteLine("utente non trovato");
-                break;
-            }
-            else
-            {
-                intesa.ModificaCliente(ClientePrestito);
-                break;
-            }
+            ModificaCliente();
+            break;
         case 3:
             StampaCliente();
             break;
@@ -46,12 +38,54 @@ while (true)
         case 7:
             InfoPrestitiRateDaPagare(inserisciIlCodiceFiscale());
             break;
+        case 8:
+            StampaInfoGenerali();
+            break;
+        case 9:
+            Bonus();
+            break;
         default:
             break;
     }
 }
 
+void ModificaCliente()
+{
+    Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
+    if (ClientePrestito == null)
+    {
+        Console.WriteLine("utente non trovato");
+        return;
+    }
 
+    Console.WriteLine("inserisci il nome");
+    string Nome = Console.ReadLine();
+    if (Nome != "")
+    {
+        ClientePrestito.Nome = Nome;
+    }
+
+    Console.WriteLine("inserisci il Cognome");
+    string Cognome = Console.ReadLine();
+    if (Cognome != "")
+    {
+        ClientePrestito.Cognome = Cognome;
+    }
+
+    Console.WriteLine("inserisci il CodiceFiscale");
+    string CodiceFiscale = Console.ReadLine();
+    if (CodiceFiscale != "")
+    {
+        ClientePrestito.CodiceFiscale = CodiceFiscale;
+    }
+
+    Console.WriteLine("inserisci il Stipendio");
+    int Stipendio = Convert.ToInt32(Console.ReadLine());
+    if (Stipendio > 0)
+    {
+        ClientePrestito.Stipendio = Stipendio;
+    }
+}
 
 void AggiungiClienteInfo()
 {
@@ -87,6 +121,7 @@ string inserisciIlCodiceFiscale()
 
 void StampaCliente()
 {
+    Console.WriteLine();
     Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
     Console.WriteLine("Nome : " + ClientePrestito.Nome);
     Console.WriteLine("Cognome : " + ClientePrestito.Cognome);
@@ -95,6 +130,7 @@ void StampaCliente()
 
 void AggiungiPrestitoInfo()
 {
+    Console.WriteLine();
     Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
     if(ClientePrestito == null)
     {
@@ -130,6 +166,7 @@ void AggiungiPrestitoInfo()
 }
 
 void StampaInfoGenerali() {
+    Console.WriteLine();
 
     Cliente ClientePrestito = intesa.RicercaCliente(inserisciIlCodiceFiscale());
     Console.WriteLine("Nome : " + ClientePrestito.Nome);
@@ -137,10 +174,20 @@ void StampaInfoGenerali() {
     Console.WriteLine("Codice fiscale : " + ClientePrestito.CodiceFiscale);
     InfoPrestitiRateDaPagare(ClientePrestito.CodiceFiscale);
     Console.WriteLine("ammontare totale dei tuoi prestiti : " + intesa.TotaleAmmontarePrestiti(ClientePrestito.CodiceFiscale));
+    List<Prestito> Pestiti = intesa.PrenstitiConcessiCliente(ClientePrestito.CodiceFiscale);
+    foreach (Prestito item in Pestiti)
+    {
+        Console.Write("ID : " + item.ID);
+        Console.WriteLine("Ammontare : " + item.Ammontare);
+        Console.WriteLine("Rata : " + item.ValoreRata);
+        Console.WriteLine("data Inizio : " + item.Inizio);
+        Console.WriteLine("data Fine : " + item.Fine);
+    }
 }
 
 void StampaPresiti()
 {
+    Console.WriteLine();
     List<Prestito> Pestiti = intesa.PrenstitiConcessiCliente(inserisciIlCodiceFiscale());
 
     foreach (Prestito item in Pestiti)
@@ -155,6 +202,7 @@ void StampaPresiti()
 
 void InfoPrestitiRateDaPagare(string codiceFiscale)
 {
+    Console.WriteLine();
     List<Prestito> PrestitiAlCliente = intesa.PrenstitiConcessiCliente(codiceFiscale);
 
     foreach (Prestito prestito in PrestitiAlCliente)
